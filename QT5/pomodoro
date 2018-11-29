@@ -25,9 +25,9 @@ import wave
 # Global vars #
 ###############
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-AUDIO1 = SCRIPT_DIR + "/../media/1.wav"
-AUDIO2 = SCRIPT_DIR + "/../media/2.wav"
-AUDIO3 = SCRIPT_DIR + "/../media/3.wav"
+AUDIO1 = os.path.normpath(SCRIPT_DIR + "/../media/1.wav")
+AUDIO2 = os.path.normpath(SCRIPT_DIR + "/../media/2.wav")
+AUDIO3 = os.path.normpath(SCRIPT_DIR + "/../media/3.wav")
 SECONDS_IN_HOUR = 3600
 SECONDS_IN_MINUTE = 60
 
@@ -220,7 +220,8 @@ class StartQT5(QWidget):
         self.ui.pushButton_pause.clicked.connect(pomodoro_pause)
         self.ui.pushButton_stop.clicked.connect(pomodoro_stop)
         # Create audio media 1
-        self.content1 = wave.open(r"../media/1.wav","rb")
+        #self.content1 = wave.open(r"../media/1.wav","rb")
+        self.content1 = wave.open(AUDIO1,"rb")
         self.player1 = pyaudio.PyAudio()
         
         #self.content1 = Media.QMediaContent(QUrl.fromLocalFile(AUDIO1))
@@ -229,7 +230,8 @@ class StartQT5(QWidget):
         #self.player1.setVolume(10)
 
         # Create audio media 2
-        self.content2 = wave.open(r"../media/2.wav","rb")
+        #self.content2 = wave.open(r"../media/2.wav","rb")
+        self.content2 = wave.open(AUDIO2,"rb")
         self.player2 = pyaudio.PyAudio()
         
 
