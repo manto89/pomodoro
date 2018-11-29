@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # DESIGN
 # ------
@@ -17,7 +17,9 @@ import time, sys, os
 from pomodoro_ui import Ui_main_window
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-import PyQt5.QtMultimedia as Media
+# import PyQt5.QtMultimedia as Media
+import pyaudio
+import wave 
 
 ###############
 # Global vars #
@@ -43,7 +45,7 @@ def pomodoro_start(mode = 0):
         pom.timer = None
         myapp.update_buttons(False, True, True)
         # How many loops the user wants
-        pom.iter_ceiling = myapp.ui.spinBox_repetitions.value() + 1
+        pom.iter_ceiling = myapp.ui.spinBox_repetitions.value() + 1 
         # First iteration should start with the work timer
         mode = 2
     elif (mode == 1):
@@ -59,6 +61,7 @@ def pomodoro_start(mode = 0):
     ##############
     if (mode == 2):
         pom.iter_j += 1
+        pom.iter_ceiling -= 1
         hours = myapp.ui.spinBox_work_hours.value()
         minutes = myapp.ui.spinBox_work_minutes.value()
         seconds = myapp.ui.spinBox_work_seconds.value()
@@ -78,6 +81,7 @@ def pomodoro_start(mode = 0):
     elif (mode == 3):
         pom.iter_j += 1
         pom.iter_i += 1
+        #pom.iter_ceiling -= 1
         hours = myapp.ui.spinBox_break_hours.value()
         minutes = myapp.ui.spinBox_break_minutes.value()
         seconds = myapp.ui.spinBox_break_seconds.value()
@@ -156,6 +160,7 @@ class Pomodoro():
             self.seconds += (minutes * SECONDS_IN_MINUTE)
         if seconds != 0:
             self.seconds += seconds
+        self.totalSeconds = self.seconds
 
     # Perform the countdown
     def count_down(self):
@@ -164,6 +169,28 @@ class Pomodoro():
         myapp.ui.label_clock.setText(string)
         # Update the seconds
         self.seconds = self.seconds - 1
+        
+        #if it's a work timer
+        if (pom.iter_j - 1) % 2 == 0:
+            if(self.seconds / self.totalSeconds < 0.2):
+                # orange 
+                myapp.ui.label_clock.setStyleSheet("background-color: rgb(255, 170, 127);")
+            elif(self.seconds / self.totalSeconds < 0.5):
+                # yellow
+                myapp.ui.label_clock.setStyleSheet("background-color: rgb(255, 255, 127);")
+            else:
+                # green 
+                myapp.ui.label_clock.setStyleSheet("background-color: rgb(170, 255, 127);")
+        else:
+            if(self.seconds / self.totalSeconds < 0.2):
+                # white 
+                myapp.ui.label_clock.setStyleSheet("background-color: rgb(255, 255, 255);")
+            elif(self.seconds / self.totalSeconds < 0.5):
+                # lightblue
+                myapp.ui.label_clock.setStyleSheet("background-color: rgb(230, 247, 255);")
+            else:
+                # blue 
+                myapp.ui.label_clock.setStyleSheet("background-color: rgb(153, 221, 255);")
         if self.seconds < 0:
             # Stop QTimer
             myapp.timer(False)
@@ -171,10 +198,14 @@ class Pomodoro():
             myapp.play()
             # We want to call pomodoro_start() ONLY if we are NOT done
             # with the iterations provided by spinBox_repetitions
-            if self.iter_i < self.iter_ceiling:
-                pomodoro_start(1)
+            if self.iter_ceiling == 0:
+                myapp.update_buttons(True, False, True)
             else:
-                myapp.update_buttons(True, False, False)
+                pomodoro_start(1)
+            #if self.iter_i < self.iter_ceiling:
+            #    pomodoro_start(1)
+            #else:
+            #    myapp.update_buttons(True, False, False)
 
 #############
 # GUI Code  #
@@ -189,22 +220,38 @@ class StartQT5(QWidget):
         self.ui.pushButton_pause.clicked.connect(pomodoro_pause)
         self.ui.pushButton_stop.clicked.connect(pomodoro_stop)
         # Create audio media 1
-        self.content1 = Media.QMediaContent(QUrl.fromLocalFile(AUDIO1))
-        self.player1 = Media.QMediaPlayer()
-        self.player1.setMedia(self.content1)
-        self.player1.setVolume(10)
+        self.content1 = wave.open(r"../media/1.wav","rb")
+        self.player1 = pyaudio.PyAudio()
+        
+        #self.content1 = Media.QMediaContent(QUrl.fromLocalFile(AUDIO1))
+        #self.player1 = Media.QMediaPlayer()
+        #self.player1.setMedia(self.content1)
+        #self.player1.setVolume(10)
+
         # Create audio media 2
-        self.content2 = Media.QMediaContent(QUrl.fromLocalFile(AUDIO2))
-        self.player2 = Media.QMediaPlayer()
-        self.player2.setMedia(self.content2)
-        self.player2.setVolume(10)
+        self.content2 = wave.open(r"../media/2.wav","rb")
+        self.player2 = pyaudio.PyAudio()
+        
+
+        #self.content2 = Media.QMediaContent(QUrl.fromLocalFile(AUDIO2))
+        #self.player2 = Media.QMediaPlayer()
+        #self.player2.setMedia(self.content2)
+        #self.player2.setVolume(10)
 
     # Button state toggle: start, pause, stop
     def update_buttons(self, start, pause, stop):
         if start:
             self.ui.pushButton_start.setEnabled(True)
+            self.ui.groupBox_2.setVisible(True)
+            self.ui.groupBox.setVisible(True)
+            self.ui.groupBox_3.setVisible(True)
+            self.ui.frame_2.setVisible(True)
         else:
             self.ui.pushButton_start.setEnabled(False)
+            self.ui.groupBox_2.setVisible(False)
+            self.ui.groupBox.setVisible(False)
+            self.ui.frame_2.setVisible(False)
+            self.ui.groupBox_3.setVisible(False)
         if pause:
             self.ui.pushButton_pause.setEnabled(True)
         else:
@@ -219,9 +266,31 @@ class StartQT5(QWidget):
         # We have to subtract 1 because in pomodo_start() we increment
         # it by 1 before calling this function
         if (pom.iter_j - 1) % 2 == 0:
-            self.player1.play()
+            stream = self.player1.open(format = self.player1.get_format_from_width(self.content1.getsampwidth()),  
+                channels = self.content1.getnchannels(),  
+                rate = self.content1.getframerate(),  
+                output = True) 
+            data = self.content1.readframes(1024)
+            while data:
+                stream.write(data)
+                data = self.content1.readframes(1024)
+            stream.stop_stream()
+            stream.close()
+            self.content1.rewind()
+            #self.player1.play()
         else:
-            self.player2.play()
+            stream = self.player2.open(format = self.player2.get_format_from_width(self.content2.getsampwidth()),  
+                channels = self.content2.getnchannels(),  
+                rate = self.content2.getframerate(),  
+                output = True) 
+            data = self.content2.readframes(1024)
+            while data:
+                stream.write(data)
+                data = self.content2.readframes(1024)
+            stream.stop_stream()
+            stream.close()
+            self.content2.rewind()
+            #self.player2.play()
 
     # QTimer
     def timer(self, state):

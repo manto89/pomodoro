@@ -93,6 +93,7 @@ class Ui_main_window(object):
         self.horizontalLayout.addWidget(self.label_8)
         self.spinBox_repetitions = QtWidgets.QSpinBox(self.groupBox_3)
         self.spinBox_repetitions.setObjectName("spinBox_repetitions")
+        self.spinBox_repetitions.setRange(-1,999)
         self.horizontalLayout.addWidget(self.spinBox_repetitions)
         self.verticalLayout.addWidget(self.groupBox_3)
         self.frame_2 = QtWidgets.QFrame(main_window)
