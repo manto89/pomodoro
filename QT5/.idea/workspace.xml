@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6491d325-9187-4eb4-a4c6-07dee99775aa" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pomodoro" beforeDir="false" afterPath="$PROJECT_DIR$/pomodoro" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pomodoro">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1342">
-              <caret line="233" column="39" selection-start-line="233" selection-start-column="39" selection-end-line="233" selection-end-column="39" />
+            <state relative-caret-position="551">
+              <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
               <folding>
                 <element signature="e#456#476#0" expanded="true" />
               </folding>
@@ -94,18 +93,26 @@
       <option name="presentableId" value="Default" />
       <updated>1543506217249</updated>
       <workItem from="1543506219895" duration="176000" />
-      <workItem from="1543506408203" duration="1939000" />
+      <workItem from="1543506408203" duration="2628000" />
+      <workItem from="1543830967081" duration="42000" />
     </task>
+    <task id="LOCAL-00001" summary="Fixed paths to audio files">
+      <created>1543508967584</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1543508967584</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2115000" />
+    <option name="totallyTimeSpent" value="2846000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="2541" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18713872" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14089595" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -131,14 +138,18 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed paths to audio files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed paths to audio files" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/pomodoro_ui.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/pomodoro">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1342">
-          <caret line="233" column="39" selection-start-line="233" selection-start-column="39" selection-end-line="233" selection-end-column="39" />
+        <state relative-caret-position="551">
+          <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
           <folding>
             <element signature="e#456#476#0" expanded="true" />
           </folding>
